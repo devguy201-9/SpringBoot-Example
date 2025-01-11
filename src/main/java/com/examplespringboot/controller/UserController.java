@@ -1,6 +1,8 @@
 package com.examplespringboot.controller;
 
 import com.examplespringboot.dto.request.UserRequestDTO;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,20 +12,20 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     @PostMapping("/")
-    public String addUser(@RequestBody UserRequestDTO userDTO) {
+    public String addUser(@Valid @RequestBody UserRequestDTO userDTO) {
         return "User Added";
     }
 
 
     @PutMapping("/{userId}")
-    public String updateUser(@PathVariable int userId, @RequestBody UserRequestDTO userDTO) {
+    public String updateUser(@PathVariable int userId,@Valid @RequestBody UserRequestDTO userDTO) {
         System.out.println("User is updated with userID=" + userId);
         return "User updated";
 
     }
 
     @PatchMapping("/{userID}")
-    public String changeStatus(@PathVariable int userId, @RequestParam boolean status) {
+    public String changeStatus(@Min(1) @PathVariable int userId, @RequestParam boolean status) {
         System.out.println("User is updated with userID=" + userId);
         return "User status changed";
     }
