@@ -1,5 +1,6 @@
 package com.examplespringboot.controller;
 
+import com.examplespringboot.configuration.Translator;
 import com.examplespringboot.dto.request.UserRequestDTO;
 import com.examplespringboot.dto.response.ResponseData;
 import com.examplespringboot.dto.response.ResponseError;
@@ -28,7 +29,7 @@ public class UserController {
         //return new ResponseData<>(HttpStatus.CREATED.value(), "User added successfully", 1);
         try {
             userService.addUser(userDTO);
-            return new ResponseData<>(HttpStatus.CREATED.value(), "User added successfully", 1);
+            return new ResponseData<>(HttpStatus.CREATED.value(), Translator.toLocate("user.add.success"), 1);
         } catch (ResourceNotFoundExeption e){
             return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Add fail");
         }
@@ -38,20 +39,20 @@ public class UserController {
     @PutMapping("/{userId}")
     public ResponseData<?> updateUser(@PathVariable int userId, @Valid @RequestBody UserRequestDTO userDTO) {
         System.out.println("User is updated with userID=" + userId);
-        return new ResponseData<>(HttpStatus.ACCEPTED.value(), "User updated successfully");
+        return new ResponseData<>(HttpStatus.ACCEPTED.value(), Translator.toLocate("user.upd.success"));
 
     }
 
     @PatchMapping("/{userID}")
     public ResponseData<?> changeStatus(@Min(1) @PathVariable int userId, @RequestParam boolean status, @PathVariable String userID) {
         System.out.println("User is updated with userID=" + userId);
-        return new ResponseData<>(HttpStatus.ACCEPTED.value(), "User changed status successfully");
+        return new ResponseData<>(HttpStatus.ACCEPTED.value(), Translator.toLocate("user.change.success"));
     }
 
     @DeleteMapping("/{userId}")
     public ResponseData<?> deleteUser(@PathVariable int userId) {
         System.out.println("User is deleted with userID=" + userId);
-        return new ResponseData<>(HttpStatus.NO_CONTENT.value(), "User deleted successfully");
+        return new ResponseData<>(HttpStatus.NO_CONTENT.value(), Translator.toLocate("user.del.success"));
     }
 
     @GetMapping("/{userId}")
