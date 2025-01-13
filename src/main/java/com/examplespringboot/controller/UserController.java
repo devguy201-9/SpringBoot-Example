@@ -3,8 +3,11 @@ package com.examplespringboot.controller;
 import com.examplespringboot.dto.request.UserRequestDTO;
 import com.examplespringboot.dto.response.ResponseData;
 import com.examplespringboot.dto.response.ResponseError;
+import com.examplespringboot.exception.ResourceNotFoundExeption;
+import com.examplespringboot.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +19,19 @@ import java.util.List;
 @Validated
 public class UserController {
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/")
     public ResponseData<Integer> addUser(@Valid @RequestBody UserRequestDTO userDTO) {
         //return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Can not created user");
-        return new ResponseData<>(HttpStatus.CREATED.value(), "User added successfully", 1);
+        //return new ResponseData<>(HttpStatus.CREATED.value(), "User added successfully", 1);
+        try {
+            userService.addUser(userDTO);
+            return new ResponseData<>(HttpStatus.CREATED.value(), "User added successfully", 1);
+        } catch (ResourceNotFoundExeption e){
+            return new ResponseError(HttpStatus.BAD_REQUEST.value(), "Add fail");
+        }
     }
 
 
