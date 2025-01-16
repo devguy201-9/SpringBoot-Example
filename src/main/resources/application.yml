@@ -1,11 +1,8 @@
 spring:
   application:
     name: devguy201.9-example
+  profiles:
+    active: @spring.profiles.active@
 
-open:
-  api:
-    title: API-Service document
-    version: v1.0.0
-    description: description
-    serverUrl: http://localhost:8080
-    serverName: server test
+#To build use: mvn clean package -P dev
+#To run use: java -jar .\target\devguy201.9-example-0.0.1-SNAPSHOT.jar
