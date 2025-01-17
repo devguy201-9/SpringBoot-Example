@@ -4,9 +4,14 @@ spring:
   config:
     activate:
       on-profile: dev
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
 openapi:
   service:
-    title: API-Service document
+    title: ${API_TITLE:DUMMY-API-TITLE}
     version: v1.0.0
     description: description
     serverUrl: http://localhost:${server.port}
