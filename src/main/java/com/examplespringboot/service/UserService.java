@@ -5,8 +5,6 @@ import com.examplespringboot.dto.response.PageResponse;
 import com.examplespringboot.dto.response.UserDetailResponse;
 import com.examplespringboot.util.UserStatus;
 
-import java.util.List;
-
 
 public interface UserService {
     // For example previous lesson
@@ -25,4 +23,8 @@ public interface UserService {
     PageResponse<?> listAllUserWithSortBy(int pageNo, int pageSize, String sortBy);
 
     PageResponse<?> listAllUserWithSortByMultipleColumns(int pageNo, int pageSize, String... sorts);
+
+    PageResponse<?> getAllUsersAndSearchWithPagingAndSorting(int pageNo, int pageSize, String search, String sort);
+
+    PageResponse<?> advanceSearchByCriteria(int pageNo, int pageSize, String sortBy, String... search);
 }

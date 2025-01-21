@@ -33,4 +33,25 @@ public class UserDetailResponse implements Serializable {
     private String type;
 
     private UserStatus status;
+
+    public UserDetailResponse(Long id, String firstName, String lastName, String phone, String email) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    public UserDetailResponse(Long id, String firstName, String lastName, String email, String phone, Date dateOfBirth, Gender gender, String username, String type, UserStatus status) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.phone = phone;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.username = username;
+        this.type = type;
+        this.status = status;
+    }
 }

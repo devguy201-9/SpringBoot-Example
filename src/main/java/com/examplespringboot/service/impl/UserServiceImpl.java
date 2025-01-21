@@ -7,6 +7,7 @@ import com.examplespringboot.dto.response.UserDetailResponse;
 import com.examplespringboot.exception.ResourceNotFoundExeption;
 import com.examplespringboot.model.Address;
 import com.examplespringboot.model.User;
+import com.examplespringboot.repository.SearchRepository;
 import com.examplespringboot.repository.UserRepository;
 import com.examplespringboot.service.UserService;
 import com.examplespringboot.util.UserStatus;
@@ -33,6 +34,7 @@ import java.util.regex.Pattern;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final SearchRepository searchRepository;
 
     @Override
     public void addUser(UserRequestDTO userDTO) {
@@ -183,14 +185,17 @@ public class UserServiceImpl implements UserService {
         List<Sort.Order> orders = new ArrayList<>();
         Pattern pattern = Pattern.compile("(\\w+?)(:)(.*)");
         Matcher matcher = null;
-        for (String s : sorts) {
-            // column:asc|desc
-            matcher = pattern.matcher(s);
-            if (matcher.find()) {
-                if (matcher.group(3).equalsIgnoreCase("asc")) {
-                    orders.add(new Sort.Order(Sort.Direction.ASC, matcher.group(1)));
-                } else {
-                    orders.add(new Sort.Order(Sort.Direction.DESC, matcher.group(1)));
+        if (sorts != null) {
+            for (String sortBy : sorts) {
+                // column:asc|desc
+                log.info("sortBy: {}", sortBy);
+                matcher = pattern.matcher(sortBy);
+                if (matcher.find()) {
+                    if (matcher.group(3).equalsIgnoreCase("asc")) {
+                        orders.add(new Sort.Order(Sort.Direction.ASC, matcher.group(1)));
+                    } else {
+                        orders.add(new Sort.Order(Sort.Direction.DESC, matcher.group(1)));
+                    }
                 }
             }
 
@@ -222,6 +227,17 @@ public class UserServiceImpl implements UserService {
                 .build();
 
 //        return list;
+    }
+
+    @Override
+    public PageResponse<?> getAllUsersAndSearchWithPagingAndSorting(int pageNo, int pageSize, String search, String sort) {
+        return searchRepository.searchUser(pageNo, pageSize, search, sort);
+    }
+
+
+    @Override
+    public PageResponse<?> advanceSearchByCriteria(int pageNo, int pageSize, String sortBy, String... search) {
+        return null;
     }
 
     private Set<Address> convertToAddress(Set<AddressDTO> addresses) {
