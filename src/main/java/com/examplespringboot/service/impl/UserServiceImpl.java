@@ -9,6 +9,7 @@ import com.examplespringboot.model.Address;
 import com.examplespringboot.model.User;
 import com.examplespringboot.repository.SearchRepository;
 import com.examplespringboot.repository.UserRepository;
+import com.examplespringboot.repository.criteria.SearchCriteria;
 import com.examplespringboot.service.UserService;
 import com.examplespringboot.util.UserStatus;
 import com.examplespringboot.util.UserType;
@@ -237,7 +238,32 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public PageResponse<?> advanceSearchByCriteria(int pageNo, int pageSize, String sortBy, String... search) {
-        return null;
+        // firstName:T,lastName:T
+        Pattern pattern = Pattern.compile("(\\w+?)(:|>|<)(.*)");
+        Matcher matcher = null;
+
+        List<SearchCriteria> criteriaList = new ArrayList<>();
+
+        // 1. Lay ra ds user
+        if (search != null) {
+            for (String itemSearch : search) {
+                // column:value
+                log.info("itemSearch: {}", itemSearch);
+                matcher = pattern.matcher(itemSearch);
+                if (matcher.find()) {
+searchCriteria.add(new SearchCriteria(matcher.group(1),matcher.group(2),matcher.group(3) ));
+                }
+            }
+        }
+
+        // 2. Lay so luong record
+        List<User> users = getUsers(pageNo,pageSize,criteriaList,sortBy);
+
+        return searchRepository.advanceSearchUser(pageNo, pageSize, sortBy, search);
+    }
+
+    private List<User> getUsers(int pageNo, int pageSize, List<SearchCriteria> criteriaList, String sortBy) {
+
     }
 
     private Set<Address> convertToAddress(Set<AddressDTO> addresses) {

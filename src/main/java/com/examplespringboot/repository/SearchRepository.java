@@ -93,4 +93,15 @@ public class SearchRepository {
                 .build();
     }
 
+    public PageResponse advanceSearchUser(int pageNo, int pageSize, String sortBy, String... search){
+
+        return PageResponse.builder()
+                .pageNo(pageNo)
+                .pageSize(pageSize)
+                .totalPage(page.getTotalPages())
+                .items(users)
+                .build();
+
+    }
+
 }
